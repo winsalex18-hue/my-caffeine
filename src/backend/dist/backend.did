@@ -1,0 +1,72 @@
+type ProductInput = 
+ record {
+   available: bool;
+   category: Category;
+   description: text;
+   imageUrl: text;
+   name: text;
+   price: nat;
+   stock: nat;
+ };
+type ProductId = nat;
+type Product = 
+ record {
+   available: bool;
+   category: Category;
+   description: text;
+   id: nat;
+   imageUrl: text;
+   name: text;
+   price: nat;
+   stock: nat;
+ };
+type OrderStatus = 
+ variant {
+   delivered;
+   outForDelivery;
+   pending;
+   preparing;
+ };
+type OrderRequest = 
+ record {
+   customerName: text;
+   customerPhone: text;
+   deliveryAddress: text;
+   deliveryTime: text;
+   items: vec OrderItem;
+ };
+type OrderItem = 
+ record {
+   productId: nat;
+   productName: text;
+   quantity: nat;
+   unitPrice: nat;
+ };
+type OrderId = nat;
+type Order = 
+ record {
+   createdAt: int;
+   customerName: text;
+   customerPhone: text;
+   deliveryAddress: text;
+   deliveryTime: text;
+   id: nat;
+   items: vec OrderItem;
+   status: OrderStatus;
+   totalPrice: nat;
+ };
+type Category = text;
+service : {
+  addProduct: (input: ProductInput) -> (Product);
+  claimOwnership: () -> (bool);
+  deleteProduct: (id: ProductId) -> (bool);
+  getOrder: (id: OrderId) -> (opt Order);
+  getOwner: () -> (opt principal) query;
+  getProduct: (id: ProductId) -> (opt Product) query;
+  isOwner: () -> (bool) query;
+  listOrders: () -> (vec Order);
+  listProducts: () -> (vec Product) query;
+  placeOrder: (req: OrderRequest) -> (Order);
+  updateOrderStatus: (id: OrderId, status: OrderStatus) -> (opt Order);
+  updateProduct: (id: ProductId, input: ProductInput) -> (opt Product);
+}

@@ -1,0 +1,70 @@
+// Version: 1.0.0
+type Category__8224233 = Text;
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OrderId__197865225 = Nat;
+type OrderItem__241319351 =
+  {productId : Nat; productName : Text; quantity : Nat; unitPrice : Nat};
+type OrderStatus__272730104 =
+  {#delivered; #outForDelivery; #pending; #preparing};
+type Order__141779993 =
+  {
+    createdAt : Int;
+    customerName : Text;
+    customerPhone : Text;
+    deliveryAddress : Text;
+    deliveryTime : Text;
+    id : Nat;
+    items : [OrderItem__241319351];
+    status : OrderStatus__272730104;
+    totalPrice : Nat
+  };
+type ProductId__160010635 = Nat;
+type Product__750902660 =
+  {
+    available : Bool;
+    category : Category__8224233;
+    description : Text;
+    id : Nat;
+    imageUrl : Text;
+    name : Text;
+    price : Nat;
+    stock : Nat
+  };
+actor {
+  stable orderCounter : {var nextId : Nat};
+  stable orderState :
+    {
+      counter : {var nextId : Nat};
+      orders : Map__605269027<OrderId__197865225, Order__141779993>;
+      products : Map__605269027<ProductId__160010635, Product__750902660>
+    };
+  stable ordersMap :
+    {
+      var root : Node__46230540<Nat, Order__141779993>;
+      var size : Nat__490723111
+    };
+  stable ownerState : {var owner : ?Principal};
+  stable productCounter : {var nextId : Nat};
+  stable productState :
+    {
+      counter : {var nextId : Nat};
+      products : Map__605269027<ProductId__160010635, Product__750902660>
+    };
+  stable productsMap :
+    {
+      var root : Node__46230540<Nat, Product__750902660>;
+      var size : Nat__490723111
+    }
+};
